@@ -10,10 +10,11 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [18.x]  # Актуальная LTS-версия
+        node-version: [18.x]
 
     steps:
       - uses: actions/checkout@v4
+      
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v4
         with:
@@ -28,11 +29,13 @@ jobs:
           git config --global user.name "Github Actions"
           git config --global user.email "action@github.com"
           git pull
-
+          
       - name: Update Template
-        run: node updater.js ${{ github.repository_owner }} dracula
         env:
-          GHT: ${{ secrets.GHT }}
+          GITHUB_TOKEN: ${{ secrets.GHT }}
+        run: |
+          echo "Running updater with token: ${GITHUB_TOKEN:0:5}..."  # Debug output (shows first 5 chars of token)
+          node updater.js ${{ github.repository_owner }} dracula
 
       - name: Commit and push changes
         run: |
