@@ -32,10 +32,10 @@ jobs:
           
       - name: Update Template
         env:
-          GITHUB_TOKEN: ${{ secrets.GHT }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Используем встроенный токен вместо кастомного
         run: |
-          echo "Running updater with token: ${GITHUB_TOKEN:0:5}..."  # Debug output (shows first 5 chars of token)
-          node updater.js ${{ github.repository_owner }} dracula
+          echo "Running updater..."
+          node updater.js ${{ github.repository_owner }} dracula $GITHUB_TOKEN
 
       - name: Commit and push changes
         run: |
